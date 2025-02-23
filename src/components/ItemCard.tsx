@@ -1,11 +1,14 @@
+import { Dispatch } from "react";
 import type { Item as ItemType } from "../types";
 import { StarIcon, PlusIcon } from "@heroicons/react/16/solid";
+import { CartActions } from "../reducers/cartReducer";
 
 type ItemCardProps = {
   item: ItemType;
+  cartDispatch: Dispatch<CartActions>;
 };
 
-export const ItemCard = ({ item }: ItemCardProps) => {
+export const ItemCard = ({ item, cartDispatch }: ItemCardProps) => {
   return (
     <div className="max-w-sm bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)] border border-gray-700">
       {/* Image Container */}
@@ -47,8 +50,13 @@ export const ItemCard = ({ item }: ItemCardProps) => {
         <p className="text-gray-400 mb-6 line-clamp-2">{item.description}</p>
 
         {/* Add to Cart Button */}
-        <button className="w-full bg-cyan-500 text-gray-900 py-3 px-4 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-cyan-400 active:transform active:scale-[0.98] transition-all duration-200 shadow-[0_0_10px_rgba(34,211,238,0.3)]">
-          <PlusIcon className="size-4" />
+        <button
+          onClick={() =>
+            cartDispatch({ type: "add-to-cart", payload: { item } })
+          }
+          className="hover:cursor-pointer w-full bg-cyan-500 text-gray-900 py-3 px-4 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-cyan-400 active:transform active:scale-[0.98] transition-all duration-200 shadow-[0_0_10px_rgba(34,211,238,0.3)]"
+        >
+          <PlusIcon className="size-6" />
           Add to Cart
         </button>
       </div>

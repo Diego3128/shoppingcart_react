@@ -1,11 +1,19 @@
+import { useEffect, useReducer } from "react";
 import Header from "./components/Header";
 import { ItemCard } from "./components/ItemCard";
 import { db } from "./data/db";
+import { cartReducer, initialState } from "./reducers/cartReducer";
 
 export default function App() {
+  const [cartState, cartDispatch] = useReducer(cartReducer, initialState);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartState.cartItems));
+  }, [cartState.cartItems]);
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-900">
-      <Header />
+      <Header cartItems={cartState.cartItems} cartDispatch={cartDispatch} />
 
       <main className="flex-1">
         <section className="py-11">
@@ -25,7 +33,7 @@ export default function App() {
             {db.map((item) => (
               <li className="mx-auto" key={item.id}>
                 <article>
-                  <ItemCard item={item} />
+                  <ItemCard item={item} cartDispatch={cartDispatch} />
                 </article>
               </li>
             ))}
